@@ -6,17 +6,21 @@ import {
   letterSpacing,
   lineHeight,
   radii,
+  shadow,
   spacing,
+  tokens,
 } from "@/app/design-system/tokens";
 
 export const theme = {
   colors,
+  tokens,
   spacing,
   fontSize,
   fontWeight,
   letterSpacing,
   lineHeight,
   radii,
+  shadow,
 } as const;
 
 type AppThemes = {

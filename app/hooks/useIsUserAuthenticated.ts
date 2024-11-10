@@ -1,9 +1,12 @@
-import { store$ } from "@/state/local/auth";
+import { useSelector } from "@legendapp/state/react";
+import { store$ } from "@/app/state/local/auth";
 
 export function useIsUserAuthenticated() {
-  return store$.isAuthenticated.get() === true;
+  const isAuthenticated = useSelector(() => store$.isAuthenticated.get());
+  return isAuthenticated;
 }
 
 export function useIsUserNotAuthenticated() {
-  return store$.isAuthenticated.get() === false;
+  const isNotAuthed = !useIsUserAuthenticated();
+  return isNotAuthed;
 }

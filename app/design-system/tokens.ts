@@ -1,3 +1,5 @@
+import { colors } from "@/app/design-system/colors";
+
 export const spacing = {
   full: "100%",
   "0": 0,
@@ -119,3 +121,14 @@ export const negativeZIndex = {
   "-999": -999,
 } as const;
 export type NegativeZIndex = keyof typeof negativeZIndex;
+
+export const shadow = {
+  default: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+} as const;
+export type Shadow = keyof typeof shadow;
+
+export const tokens = {
+  errorBg: colors.red200,
+  errorText: colors.black,
+} as const;
+export type Tokens = keyof typeof tokens;

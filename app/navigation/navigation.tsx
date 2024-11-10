@@ -3,7 +3,10 @@ import {
   createStaticNavigation,
   type StaticParamList,
 } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  NativeStackNavigationProp,
+  createNativeStackNavigator,
+} from "@react-navigation/native-stack";
 import { Home2, User } from "iconsax-react-native";
 import {
   useIsUserAuthenticated,
@@ -54,6 +57,13 @@ export const WelcomeStack = createNativeStackNavigator({
     Onboarding: OnboardingScreen, // shows onboarding (basically create an account)
   },
 });
+export type WelcomeStackParamList = {
+  Welcome: undefined;
+  Login: undefined;
+  Onboarding: undefined;
+};
+export type WelcomeStackNavigation =
+  NativeStackNavigationProp<WelcomeStackParamList>;
 
 /**
  * Root stack
