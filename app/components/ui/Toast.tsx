@@ -36,7 +36,7 @@ export const toastConfig = {
 };
 
 const stylesheet = createStyleSheet(
-  ({ tokens, colors, spacing, fontSize, fontWeight }) => ({
+  ({ tokens, colors, fontSize, fontWeight }) => ({
     successContainer: {
       backgroundColor: colors.green200,
     },

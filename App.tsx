@@ -2,8 +2,10 @@ import { toastConfig } from "@/app/components/ui/Toast";
 import "@/app/design-system/theme";
 import React, { useEffect } from "react";
 import { Text } from "react-native";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useNavigationContainerRef } from "@react-navigation/native";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { Navigation } from "@/app/navigation/navigation";
 import { supabase } from "@/app/services/supabase/supabase";
@@ -26,15 +28,19 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Navigation
-        ref={navigationRef}
-        linking={{
-          enabled: "auto",
-          prefixes: ["myplayground://"],
-        }}
-        fallback={<Text>Loading...</Text>}
-      />
-      <Toast config={toastConfig} />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <BottomSheetModalProvider>
+          <Navigation
+            ref={navigationRef}
+            linking={{
+              enabled: "auto",
+              prefixes: ["myplayground://"],
+            }}
+            fallback={<Text>Loading...</Text>}
+          />
+          <Toast config={toastConfig} />
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
     </QueryClientProvider>
   );
 }

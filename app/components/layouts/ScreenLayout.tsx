@@ -23,33 +23,33 @@ export function ScreenLayout({
   return (
     <ScrollView style={styles.container}>
       <View style={styles.inner}>
-        {showGoBack && (
-          <View style={styles.header}>
-            <Pressable onPress={goBack}>
+        <View style={styles.header}>
+          {showGoBack && (
+            <Pressable style={styles.goBack} onPress={goBack}>
               <ArrowLeft2
                 size={30}
                 color={theme === "dark" ? "white" : "black"}
                 onPress={goBack}
               />
             </Pressable>
-          </View>
-        )}
-        {title && (
-          <Text
-            size="4xl"
-            weight="bold"
-            color={theme === "dark" ? "white" : "black"}
-          >
-            {title}
-          </Text>
-        )}
+          )}
+          {title && (
+            <Text
+              size="4xl"
+              weight="bold"
+              color={theme === "dark" ? "white" : "black"}
+            >
+              {title}
+            </Text>
+          )}
+        </View>
         {children}
       </View>
     </ScrollView>
   );
 }
 
-const stylesheet = createStyleSheet((theme, rt) => ({
+const stylesheet = createStyleSheet(({ spacing }, rt) => ({
   container: {
     flex: 1,
     paddingTop: rt.insets.top,
@@ -59,11 +59,15 @@ const stylesheet = createStyleSheet((theme, rt) => ({
   },
   inner: {
     flex: 1,
-    paddingTop: theme.spacing[2],
-    paddingBottom: theme.spacing[5],
-    paddingHorizontal: theme.spacing[5],
+    paddingTop: spacing[2],
+    paddingBottom: spacing[5],
+    paddingHorizontal: spacing[5],
   },
   header: {
     flexDirection: "row",
+    alignItems: "center",
+  },
+  goBack: {
+    paddingRight: spacing[4],
   },
 }));

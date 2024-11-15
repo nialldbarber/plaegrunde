@@ -1,3 +1,11 @@
+import { useCallback, useRef, useState } from "react";
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+  BottomSheetScrollView,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Toast from "react-native-toast-message";
@@ -7,6 +15,7 @@ import { ScreenLayout } from "@/app/components/layouts/ScreenLayout";
 import { VStack } from "@/app/components/layouts/Stack/VStack";
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
+import { Text } from "@/app/components/ui/Text";
 import { supabase } from "@/app/services/supabase/supabase";
 import { store$ } from "@/app/state/local/auth";
 
@@ -60,7 +69,6 @@ export function OnboardingScreen() {
       });
 
       if (error) {
-        console.error("### HELLO", error);
         Toast.show({
           type: "error",
           text1: error.message,
@@ -78,15 +86,86 @@ export function OnboardingScreen() {
 
       store$.setIsAuthenticated(true);
     } catch (error) {
-      console.error(error);
       store$.setIsAuthenticated(false);
+      console.error(error);
+      throw error;
     }
   };
 
+  const bottomSheetModalRefOne = useRef<BottomSheetModal>(null);
+  const bottomSheetModalRefTwo = useRef<BottomSheetModal>(null);
+
+  const handleUpdateModalOne = () => {
+    increment();
+
+    bottomSheetModalRefOne.current?.dismiss();
+    bottomSheetModalRefTwo.current?.present();
+  };
+
+  const handleUpdateModalTwo = () => {
+    increment();
+
+    bottomSheetModalRefTwo.current?.dismiss();
+    bottomSheetModalRefOne.current?.present();
+  };
+
+  const [count, setCount] = useState(0);
+  const increment = () => setCount(count + 1);
+
+  console.log("mounted", count);
+
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={1}
+        appearsOnIndex={2}
+      />
+    ),
+    [],
+  );
+
   return (
     <>
+      <BottomSheetModal
+        ref={bottomSheetModalRefOne}
+        enableDynamicSizing
+        maxDynamicContentSize={800}
+      >
+        <BottomSheetScrollView style={{ padding: 20, paddingBottom: 100 }}>
+          <Button onPress={increment}>Increment</Button>
+          <Text size="xl" weight="bold" style={{ marginBottom: 20 }}>
+            One {count}
+          </Text>
+          <Button onPress={handleUpdateModalOne}>Open Two</Button>
+          {Array.from({ length: count }).map((_, index) => (
+            <Button
+              variant={index % 2 === 0 ? "primary" : "secondary"}
+              key={index}
+            >
+              {index}
+            </Button>
+          ))}
+        </BottomSheetScrollView>
+      </BottomSheetModal>
+      <BottomSheetModal ref={bottomSheetModalRefTwo}>
+        <BottomSheetView style={{ flex: 1, padding: 20, paddingBottom: 100 }}>
+          <Text size="xl" weight="bold" style={{ marginBottom: 20 }}>
+            Two {count}
+          </Text>
+          <Button onPress={handleUpdateModalTwo}>Open One</Button>
+        </BottomSheetView>
+      </BottomSheetModal>
       <GradientBackground />
       <ScreenLayout title="Create account" theme="dark" showGoBack>
+        <VStack spacingTop="4" spacingBottom="4" itemSpacing="6">
+          <Button onPress={() => bottomSheetModalRefOne.current?.present()}>
+            Open One
+          </Button>
+          <Button onPress={() => bottomSheetModalRefTwo.current?.present()}>
+            Open Two
+          </Button>
+        </VStack>
         <VStack spacingTop="4" spacingBottom="4" itemSpacing="6">
           <Input
             placeholder="Email"
